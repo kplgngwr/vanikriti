@@ -1,5 +1,10 @@
 import mongoose from 'mongoose';
 
+// Extend the NodeJS global type
+declare global {
+  var mongoose: { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null } | undefined;
+}
+
 interface ConnectionCache {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
@@ -16,7 +21,7 @@ if (!MONGODB_URI) {
  * in development. This prevents connections from growing exponentially
  * during API Route usage.
  */
-let cached: ConnectionCache = global.mongoose;
+let cached: ConnectionCache = (global.mongoose as ConnectionCache) || { conn: null, promise: null };
 
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
