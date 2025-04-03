@@ -13,11 +13,11 @@ export function MapProvider({ children }: { children: ReactNode }) {
 
   // Load the Google Maps JavaScript API asynchronously
   const { isLoaded: scriptLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API || '',
     libraries: libraries as Libraries,
   });
 
-  if(loadError) return <p>Encountered error while loading google maps</p>
+  if(loadError) return <p>Encountered error while loading google maps: {loadError.message}</p>
 
   if(!scriptLoaded) return <p>Map Script is loading ...</p>
 
